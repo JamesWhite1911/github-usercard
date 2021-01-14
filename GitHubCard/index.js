@@ -3,6 +3,24 @@
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+import axios from "axios"; //import axios
+
+const entryPoint = document.querySelector('.cards'); //where we want to insert our html
+
+function getUser() {
+  axios
+    .get('https://api.github.com/users/jameswhite1911') //grab the api
+    .then((res) => {
+      const info = res.data; //found our info
+      console.log("OUR DATA", res.data);
+      const userCard = cardMaker({info}); //pass info to our card maker as an object
+      console.log(userCard);
+      entryPoint.append(userCard); //append our card to the entry point
+    })
+    .catch((err) => {
+      console.log("Something went wrong", err);
+    });
+}
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -49,6 +67,43 @@ const followersArray = [];
       </div>
     </div>
 */
+
+function cardMaker(obj) {
+  const card = document.createElement('div');
+  const image = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const name = document.createElement('h3');
+  const userName = document.createElement('p');
+  const location = document.createElement('p');
+  const profile = document.createElement('p');
+  const gitUrl = document.createElement('a');
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const userCount = document.createElement('p');
+  const bio = document.createElement('p');
+
+  //lets put our appends here
+  card.classList.add('card');
+  image.src = obj; //find our image in the api
+  cardInfo.classList.add('card-info');
+  name.classList.add('name');
+  userName.classList.add('username');
+  gitUrl.href = obj; //find our git url
+
+  //text areas
+  location.textContent.add("Location: ${obj.location}"); //find our location in the api
+  profile.textContent.add('Profile: ');
+  gitUrl.textContent.add('${obj}') //find our git url
+  followers.textContent.add('${obj}'); //find our followers
+  following.textContent.add('${obj}'); //find who we're following
+  userCount.textContent.add('${obj}'); //find our user count
+  bio.textContent.add('${obj}') //find our bio
+
+
+  return card;
+}
+
+getUser();
 
 /*
   List of LS Instructors Github username's:
